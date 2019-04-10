@@ -1,12 +1,24 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const requireDir = require('require-dir');
 
 const app = express();
 
-// o que conseguimos pegar pelo 'req' = parâmetros, corpo da requisição, cabeçalho da requisição, usuário que faz a requisição, se o usuário está ou não autenticado, todos os tipos de informações que estão na requisição, IP, ...etc;
+mongoose.connect(
+  'mongodb://localhost:27017/nodeapi', 
+  { useNewUrlParser: true }
+);
+requireDir('./src/models');
 
-// o 'res' tem a ver com a resposta que vamos dar com a partir da requisição;
+const Product = mongoose.model('Product');
+
 app.get('/', (req, res) => {
-  res.send("Hello DUDE");
+  Product.create({ 
+    title: 'React Native',
+    description: 'Build native apps with react',
+    url: 'http://github.com/facebook/react-native'
+  })
+  return res.send("Hello DUDE");
 });
 
-app.listen(3001);
+app.listen(3333);
